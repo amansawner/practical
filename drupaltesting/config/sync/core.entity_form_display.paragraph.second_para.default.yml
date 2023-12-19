@@ -1,0 +1,45 @@
+uuid: 0f242582-3b3b-4a07-8758-0979f257f267
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.second_para.field_para_2_field_date
+    - field.field.paragraph.second_para.field_para_2_field_link
+    - field.field.paragraph.second_para.field_text_field
+    - paragraphs.paragraphs_type.second_para
+  module:
+    - datetime
+    - link
+    - text
+id: paragraph.second_para.default
+targetEntityType: paragraph
+bundle: second_para
+mode: default
+content:
+  field_para_2_field_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_para_2_field_link:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_text_field:
+    type: text_textarea_with_summary
+    weight: 2
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

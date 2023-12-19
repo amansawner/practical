@@ -1,0 +1,40 @@
+uuid: 64065f42-2d48-4424-9fbd-4fa49dc86c64
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.restricted_html
+    - node.type.content_type_1
+    - node.type.content_type_2
+    - node.type.content_type_3
+  module:
+    - comment
+    - contact
+    - filter
+    - node
+    - paragraphs
+    - paragraphs_type_permissions
+    - rest
+    - search
+    - system
+_core:
+  default_config_hash: 6WavjUYXIegP9AAg2zXGx54MWIVoomC3SZhNiqe-Dyk
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access site-wide contact form'
+  - 'administer rest resources'
+  - 'search content'
+  - 'use text format restricted_html'
+  - 'view content_type_1 revisions'
+  - 'view content_type_2 revisions'
+  - 'view content_type_3 revisions'
+  - 'view own unpublished content'
+  - 'view paragraph content first_para'
+  - 'view paragraph content second_para'
+  - 'view paragraph content third_para'
+  - 'view unpublished paragraphs'

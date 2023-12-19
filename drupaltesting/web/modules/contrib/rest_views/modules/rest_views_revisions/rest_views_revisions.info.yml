@@ -1,0 +1,13 @@
+name: REST Views Entity Revisions
+type: module
+description: Export entity reference fields that are revisioned along with the entity, such as Paragraphs.
+core_version_requirement: ^9 | ^10
+package: REST Views
+dependencies:
+  - entity_reference_revisions:entity_reference_revisions
+  - rest_views:rest_views
+
+# Information added by Drupal.org packaging script on 2023-10-05
+version: '3.0.0-alpha1'
+project: 'rest_views'
+datestamp: 1696524630

@@ -1,0 +1,37 @@
+uuid: dacc1d14-0250-470e-a5a2-ea064ef36640
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_para_3
+    - node.type.content_type_3
+    - paragraphs.paragraphs_type.third_para
+  module:
+    - entity_reference_revisions
+id: node.content_type_3.field_para_3
+field_name: field_para_3
+entity_type: node
+bundle: content_type_3
+label: 'para 3'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      third_para: third_para
+    negate: 0
+    target_bundles_drag_drop:
+      first_para:
+        weight: 4
+        enabled: false
+      second_para:
+        weight: 5
+        enabled: false
+      third_para:
+        weight: 6
+        enabled: true
+field_type: entity_reference_revisions

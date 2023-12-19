@@ -1,0 +1,21 @@
+uuid: 371faa3d-5219-415f-86f4-3a0631706799
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_2_field_date
+    - paragraphs.paragraphs_type.second_para
+  module:
+    - datetime
+id: paragraph.second_para.field_para_2_field_date
+field_name: field_para_2_field_date
+entity_type: paragraph
+bundle: second_para
+label: 'para 2 field date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

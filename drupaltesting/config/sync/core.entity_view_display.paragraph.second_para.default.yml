@@ -1,0 +1,47 @@
+uuid: 26157629-f60f-42cc-a8cd-7f01e5dc4615
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.second_para.field_para_2_field_date
+    - field.field.paragraph.second_para.field_para_2_field_link
+    - field.field.paragraph.second_para.field_text_field
+    - paragraphs.paragraphs_type.second_para
+  module:
+    - datetime
+    - link
+    - text
+id: paragraph.second_para.default
+targetEntityType: paragraph
+bundle: second_para
+mode: default
+content:
+  field_para_2_field_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_para_2_field_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_text_field:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden: {  }

@@ -1,0 +1,23 @@
+uuid: 73ff82f0-18ed-48c9-be29-ca24f50d7307
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_2_field_link
+    - paragraphs.paragraphs_type.second_para
+  module:
+    - link
+id: paragraph.second_para.field_para_2_field_link
+field_name: field_para_2_field_link
+entity_type: paragraph
+bundle: second_para
+label: 'para 2 field link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

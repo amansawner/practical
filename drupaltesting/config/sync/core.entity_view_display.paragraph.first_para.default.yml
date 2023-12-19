@@ -1,0 +1,30 @@
+uuid: 5acdc533-34a2-4e12-b587-1a2461082830
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.first_para.field_para_1_field
+    - field.field.paragraph.first_para.field_para_1_field_email
+    - paragraphs.paragraphs_type.first_para
+  module:
+    - text
+id: paragraph.first_para.default
+targetEntityType: paragraph
+bundle: first_para
+mode: default
+content:
+  field_para_1_field:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_para_1_field_email:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

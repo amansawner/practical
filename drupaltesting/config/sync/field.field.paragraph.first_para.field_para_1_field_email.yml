@@ -1,0 +1,19 @@
+uuid: 9ad81d45-fdf5-4eee-a3f7-34627848cd6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_1_field_email
+    - paragraphs.paragraphs_type.first_para
+id: paragraph.first_para.field_para_1_field_email
+field_name: field_para_1_field_email
+entity_type: paragraph
+bundle: first_para
+label: 'para 1 field email'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

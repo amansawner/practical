@@ -1,0 +1,35 @@
+uuid: a6b6b66f-52d6-4fd1-b9aa-46f4baf3d448
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.third_para.field_para_3_field_number
+    - field.field.paragraph.third_para.field_para_3_field_text
+    - paragraphs.paragraphs_type.third_para
+  module:
+    - text
+id: paragraph.third_para.default
+targetEntityType: paragraph
+bundle: third_para
+mode: default
+content:
+  field_para_3_field_number:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_para_3_field_text:
+    type: text_textarea_with_summary
+    weight: 0
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

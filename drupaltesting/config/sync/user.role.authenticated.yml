@@ -1,0 +1,44 @@
+uuid: b397006b-d398-4c06-bdeb-633b04619645
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - node.type.content_type_1
+    - node.type.content_type_2
+    - node.type.content_type_3
+  module:
+    - comment
+    - contact
+    - filter
+    - node
+    - paragraphs
+    - paragraphs_type_permissions
+    - rest
+    - search
+    - shortcut
+    - system
+_core:
+  default_config_hash: I44QAB4es39lNzMQWiJLq2dfjX7VRSOzT_5KzAcUq_M
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'administer rest resources'
+  - 'post comments'
+  - 'search content'
+  - 'skip comment approval'
+  - 'use text format basic_html'
+  - 'view content_type_1 revisions'
+  - 'view content_type_2 revisions'
+  - 'view content_type_3 revisions'
+  - 'view own unpublished content'
+  - 'view paragraph content first_para'
+  - 'view paragraph content second_para'
+  - 'view paragraph content third_para'
+  - 'view unpublished paragraphs'

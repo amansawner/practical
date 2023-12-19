@@ -1,0 +1,20 @@
+uuid: 647684cc-7cfa-4435-a376-9b5da581bd45
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - paragraphs
+id: paragraph.field_para_2_field_date
+field_name: field_para_2_field_date
+entity_type: paragraph
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

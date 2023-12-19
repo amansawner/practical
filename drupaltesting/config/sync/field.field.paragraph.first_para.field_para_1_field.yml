@@ -1,0 +1,21 @@
+uuid: 907729b7-aedb-4806-8356-24f29108c1c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_1_field
+    - paragraphs.paragraphs_type.first_para
+  module:
+    - text
+id: paragraph.first_para.field_para_1_field
+field_name: field_para_1_field
+entity_type: paragraph
+bundle: first_para
+label: 'para 1 field'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

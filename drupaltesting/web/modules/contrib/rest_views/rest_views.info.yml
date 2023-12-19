@@ -1,0 +1,13 @@
+name: REST Views
+type: module
+description: Expose fields and entity references in REST view displays.
+core_version_requirement: ^9.3 || ^10
+package: REST Views
+dependencies:
+  - drupal:views
+  - drupal:rest
+
+# Information added by Drupal.org packaging script on 2023-10-05
+version: '3.0.0-alpha1'
+project: 'rest_views'
+datestamp: 1696524630

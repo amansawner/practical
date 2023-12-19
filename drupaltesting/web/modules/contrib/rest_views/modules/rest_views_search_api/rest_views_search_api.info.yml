@@ -1,0 +1,13 @@
+name: REST Views Search API
+type: module
+description: Export a Search API field.
+core_version_requirement: ^9 | ^10
+package: REST Views
+dependencies:
+  - rest_views:rest_views
+  - search_api:search_api
+
+# Information added by Drupal.org packaging script on 2023-10-05
+version: '3.0.0-alpha1'
+project: 'rest_views'
+datestamp: 1696524630

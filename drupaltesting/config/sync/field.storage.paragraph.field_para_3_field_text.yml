@@ -1,0 +1,19 @@
+uuid: 526b3d23-0728-4bdf-8e80-08557c57e373
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_para_3_field_text
+field_name: field_para_3_field_text
+entity_type: paragraph
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

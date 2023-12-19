@@ -1,0 +1,23 @@
+uuid: 69ffefe7-42fc-4db5-9907-4346f4f91c9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_3_field_number
+    - paragraphs.paragraphs_type.third_para
+id: paragraph.third_para.field_para_3_field_number
+field_name: field_para_3_field_number
+entity_type: paragraph
+bundle: third_para
+label: 'para 3 field number'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
