@@ -1,0 +1,21 @@
+animate.css:
+  remote: https://animate.style/
+  version: 4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      /libraries/animate.css/animate.min.css: { minified: true }
+
+animate.cdn:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css': { type: external, minified: true }

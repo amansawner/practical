@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the WOW JS module.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function wowjs_ui_install() {
+  // Add WOW JS enable link status.
+  \Drupal::messenger()->addStatus(t('Enable WOW JS in Animate CSS <a href=":url">Add animate</a> page.', [
+    ':url' => Url::fromRoute('animatecss.add')->toString(),
+  ]));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function wowjs_ui_uninstall() {
+  // If uninstall and re-install wowjs_ui module will show error:
+  // Unable to install WOW JS UI, wowjs.settings already
+  // exists in active configuration.
+  $query = \Drupal::database()->delete('config');
+  // Delete set variables in wowjs_ui uninstall, because
+  // of name "wowjs.settings" it will delete in "wowjs"
+  // module uninstall, will not delete in "wowjs_ui" uninstall.
+  $query->condition('name', 'wowjs.settings');
+  $query->execute();
+
+  // Get stored animate selectors from database.
+  $results = \Drupal::service('animatecss.animate_manager')->findAll()->fetchAll();
+  if (count($results)) {
+    foreach ($results as $animate) {
+      $animate_options = unserialize($animate->options, ['allowed_classes' => FALSE]);
+
+      // Check wow is enabled then add to records.
+      if (isset($animate_options['wow'])) {
+        unset($animate_options['wow']);
+        $aid = $animate->aid;
+        $selector = $animate->selector;
+        $label = $animate->label;
+        $comment = $animate->comment;
+        $changed = $animate->changed;
+        $status = $animate->status;
+        $options = serialize($animate_options);
+        \Drupal::service('animatecss.animate_manager')->addAnimate($aid, $selector, $label, $comment, $changed, $status, $options);
+      }
+    }
+  }
+}
+
+/**
+ * Added new features.
+ */
+function wowjs_ui_update_8001() {
+  // Do nothing to clear cache.
+}
+
+/**
+ * Added new configuration field to hide CDN library warning.
+ */
+function wowjs_ui_update_8002() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('wowjs.settings');
+  // Add new hide configuration field.
+  $config->set('hide', FALSE);
+  $config->save(TRUE);
+}

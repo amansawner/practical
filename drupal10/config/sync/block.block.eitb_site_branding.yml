@@ -1,0 +1,25 @@
+uuid: 4c6fb39c-1e25-4586-9288-90632f3896bb
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - eitb
+_core:
+  default_config_hash: n_nlgjggHVfQt2H__zvLOKB2YtjPDbQ5tHijF9LE1aM
+id: eitb_site_branding
+theme: eitb
+region: header
+weight: 7
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: false
+visibility: {  }

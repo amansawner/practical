@@ -1,0 +1,13 @@
+name: Custom Theme
+type: theme
+description: 'Custom Theme for My Website.'
+package: Other
+core_version_requirement: ^8 || ^9 || ^10
+libraries:
+  - eitb/global-styling
+
+base theme: bootstrap
+regions:
+  header: 'Top Bar'
+  content: 'Content'
+  footer: 'Footer'

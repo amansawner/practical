@@ -1,0 +1,9 @@
+animatecss.admin:
+  title: 'List'
+  route_name: animatecss.admin
+  base_route: animatecss.admin
+
+animatecss.settings:
+  title: 'Settings'
+  route_name: animatecss.settings
+  base_route: animatecss.admin

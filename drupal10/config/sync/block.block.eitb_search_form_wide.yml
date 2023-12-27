@@ -1,0 +1,23 @@
+uuid: 6ab11a53-c0be-46a4-af62-6f51055ec163
+langcode: en
+status: false
+dependencies:
+  module:
+    - search
+  theme:
+    - eitb
+_core:
+  default_config_hash: imMyHD6LYci0gtXq56qr9ZKGHzbEG9uFydrN5EhKtSU
+id: eitb_search_form_wide
+theme: eitb
+region: header
+weight: -4
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form (wide)'
+  label_display: '0'
+  provider: search
+  page_id: ''
+visibility: {  }

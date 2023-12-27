@@ -1,0 +1,40 @@
+uuid: 293a0945-2a20-4adf-942c-c81cbec55f7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.footer_3rd.body
+    - field.field.node.footer_3rd.field_about_us
+    - field.field.node.footer_3rd.field_long_contact_us
+    - node.type.footer_3rd
+  module:
+    - text
+    - user
+id: node.footer_3rd.default
+targetEntityType: node
+bundle: footer_3rd
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_about_us:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_long_contact_us:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  links: true

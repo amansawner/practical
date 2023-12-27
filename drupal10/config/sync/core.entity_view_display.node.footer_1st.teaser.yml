@@ -1,0 +1,26 @@
+uuid: d0cfdc06-9800-4c00-8c25-fc8edc12cf76
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.footer_1st.field_contacty
+    - field.field.node.footer_1st.field_lets_talk
+    - field.field.node.footer_1st.field_social
+    - node.type.footer_1st
+  module:
+    - user
+id: node.footer_1st.teaser
+targetEntityType: node
+bundle: footer_1st
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_contacty: true
+  field_lets_talk: true
+  field_social: true

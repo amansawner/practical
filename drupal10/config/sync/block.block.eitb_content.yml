@@ -1,0 +1,22 @@
+uuid: dbb273cb-171a-4a96-9e81-426dd3928aac
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - eitb
+_core:
+  default_config_hash: erQSEZF2XUjNmgTl0uNRBzmg18ZGXwUcw2FhApoeuHk
+id: eitb_content
+theme: eitb
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

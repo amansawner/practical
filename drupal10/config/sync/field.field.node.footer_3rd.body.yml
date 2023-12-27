@@ -1,0 +1,23 @@
+uuid: ad3d0715-6ae1-4559-8c18-f444f6efcceb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.footer_3rd
+  module:
+    - text
+id: node.footer_3rd.body
+field_name: body
+entity_type: node
+bundle: footer_3rd
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

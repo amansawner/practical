@@ -1,0 +1,20 @@
+uuid: 12c2bc2d-ef63-43bf-b83f-8d03b5a9706f
+langcode: en
+status: false
+dependencies:
+  theme:
+    - eitb
+_core:
+  default_config_hash: 6aOgWsNTXjqrDm98TXSAjP6qd2nCijD1xw45MrnbK-Y
+id: eitb_page_title
+theme: eitb
+region: header
+weight: -6
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

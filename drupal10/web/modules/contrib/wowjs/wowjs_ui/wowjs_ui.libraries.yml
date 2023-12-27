@@ -1,0 +1,49 @@
+wow.js:
+  remote: https://www.delac.io/WOW
+  version: 1.1.3
+  license:
+    name: MIT
+    url: https://www.opensource.org/licenses/mit-license.php
+    gpl-compatible: true
+  js:
+    /libraries/wow/dist/wow.min.js: { minified: true }
+
+wow.dev:
+  remote: https://www.delac.io/WOW
+  version: 1.1.3
+  license:
+    name: MIT
+    url: https://www.opensource.org/licenses/mit-license.php
+    gpl-compatible: true
+  js:
+    /libraries/wow/dist/wow.js: { }
+
+wow.cdn:
+  remote: https://www.delac.io/WOW
+  version: 1.1.3
+  license:
+    name: MIT
+    url: https://www.opensource.org/licenses/mit-license.php
+    gpl-compatible: true
+  js:
+    '//cdn.jsdelivr.net/npm/wowjs/dist/wow.min.js': { type: external, minified: true }
+
+wow.cdn.dev:
+  remote: https://www.delac.io/WOW
+  version: 1.1.3
+  license:
+    name: MIT
+    url: https://www.opensource.org/licenses/mit-license.php
+    gpl-compatible: true
+  js:
+    '//cdn.jsdelivr.net/npm/wowjs/dist/wow.js': { type: external }
+
+wow-init:
+  version: VERSION
+  js:
+    js/wowjs.init.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once

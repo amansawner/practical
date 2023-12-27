@@ -1,0 +1,6 @@
+services:
+  animatecss.animate_manager:
+    class: Drupal\animatecss_ui\AnimateCssManager
+    arguments: [ '@database' ]
+    tags:
+      - { name: backend_overridable }

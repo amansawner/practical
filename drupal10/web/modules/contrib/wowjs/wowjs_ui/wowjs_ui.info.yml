@@ -1,0 +1,14 @@
+name: 'WOW JS UI'
+type: module
+description: 'Provides the WOW.js library configuration UI.'
+core_version_requirement: ^8 || ^9 || ^10
+package: Animate CSS
+configure: animatecss.admin
+dependencies:
+  - animatecss_ui:animatecss_ui (>=1.0.3)
+  - wowjs:wowjs
+
+# Information added by Drupal.org packaging script on 2023-11-13
+version: '1.0.3'
+project: 'wowjs'
+datestamp: 1699872209

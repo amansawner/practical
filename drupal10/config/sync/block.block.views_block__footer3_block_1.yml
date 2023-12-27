@@ -1,0 +1,24 @@
+uuid: e901ce57-4f69-4e51-89fe-4e14c721423b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.footer3
+  module:
+    - views
+  theme:
+    - eitb
+id: views_block__footer3_block_1
+theme: eitb
+region: footer
+weight: -9
+provider: null
+plugin: 'views_block:footer3-block_1'
+settings:
+  id: 'views_block:footer3-block_1'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility: {  }

@@ -1,0 +1,20 @@
+uuid: 1c20fdd1-2cff-4e08-9277-8e15da1cd586
+langcode: en
+status: true
+dependencies:
+  module:
+    - hct
+  theme:
+    - eitb
+id: footerblock
+theme: eitb
+region: footer
+weight: 0
+provider: null
+plugin: footer
+settings:
+  id: footer
+  label: 'footer Block'
+  label_display: '0'
+  provider: hct
+visibility: {  }

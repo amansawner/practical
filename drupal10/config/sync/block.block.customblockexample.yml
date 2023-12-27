@@ -1,0 +1,25 @@
+uuid: 2fd9f934-682a-4e1b-9c31-3056ccc35f7c
+langcode: en
+status: true
+dependencies:
+  module:
+    - hct
+    - system
+  theme:
+    - eitb
+id: customblockexample
+theme: eitb
+region: header
+weight: -7
+provider: null
+plugin: custom_block_example
+settings:
+  id: custom_block_example
+  label: 'Custom Block Example'
+  label_display: '0'
+  provider: hct
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /contact

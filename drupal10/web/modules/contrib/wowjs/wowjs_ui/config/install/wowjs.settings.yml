@@ -1,0 +1,13 @@
+hide: false
+method: local
+minimized:
+  options: true
+options:
+  classBox:
+    - 'wow'
+  animateClass: 'animate__animated'
+  offset: 0
+  mobile: true
+  live: true
+  optionalContainer: false
+  scrollContainer: 'window'

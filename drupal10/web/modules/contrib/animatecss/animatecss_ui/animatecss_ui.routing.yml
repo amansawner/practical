@@ -1,0 +1,47 @@
+animatecss.admin:
+  path: '/admin/config/user-interface/animatecss'
+  defaults:
+    _form: '\Drupal\animatecss_ui\AnimateCssAdmin'
+    _title: 'Animate List'
+  requirements:
+    _permission: 'administer animate css'
+
+animatecss.add:
+  path: '/admin/config/user-interface/animatecss/add'
+  defaults:
+    _form: '\Drupal\animatecss_ui\Form\AnimateCssForm'
+    _title: 'Add Animate'
+  requirements:
+    _permission: 'administer animate css'
+
+animatecss.edit:
+  path: '/admin/config/user-interface/animatecss/edit/{animate}'
+  defaults:
+    _form: '\Drupal\animatecss_ui\Form\AnimateCssForm'
+    _title: 'Edit Animate'
+  requirements:
+    _permission: 'administer animate css'
+
+animatecss.delete:
+  path: '/admin/config/user-interface/animatecss/delete/{animate}'
+  defaults:
+    _form: '\Drupal\animatecss_ui\Form\AnimateCssDelete'
+    _title: 'Delete Animate'
+  requirements:
+    _permission: 'administer animate css'
+
+animatecss.duplicate:
+  path: '/admin/config/user-interface/animatecss/duplicate/{animate}'
+  defaults:
+    _form: '\Drupal\animatecss_ui\Form\AnimateCssDuplicate'
+    _title: 'Duplicate Animate'
+  requirements:
+    _permission: 'administer animate css'
+
+animatecss.settings:
+  path: '/admin/config/user-interface/animatecss/settings'
+  defaults:
+    _form: '\Drupal\animatecss_ui\Form\AnimateCssSettings'
+    _title: 'Animate Settings'
+  requirements:
+    _permission: 'administer animate css'

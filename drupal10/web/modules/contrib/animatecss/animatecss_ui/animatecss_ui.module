@@ -1,0 +1,266 @@
+<?php
+
+/**
+ * @file
+ * Drupal`s integration with Animate.css library.
+ *
+ * Animate.css is a library of ready-to-use, cross-browser animations
+ * for use in your web projects. Great for emphasis, home pages, sliders,
+ * and attention-guiding hints.
+ *
+ * Github:  https://github.com/animate-css/animate.css
+ * Website: https://animate.style/
+ * license: MIT licensed
+ *
+ * Copyright (C) 2021-2023 Daniel Eden
+ */
+
+use Drupal\Core\Installer\InstallerKernel;
+use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+/**
+ * Implements hook_help().
+ */
+function animatecss_ui_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.animatecss_ui':
+      return '<p>' . t('<a href=":animate_url">Animate.css</a> is a library of ready-to-use, cross-browser animations for use in your web projects. Great for emphasis, home pages, sliders, and attention-guiding hints., see the <a href=":animate_github">Animate.css Github</a> for usage and Configure on <a href=":animate_config">AnimateCSS module settings</a> to put CSS selectors you want animated element.', [
+        ':animate_url'    => 'https://animate.style/',
+        ':animate_github' => 'https://github.com/animate-css/animate.css',
+        ':animate_config' => Link::createFromRoute(t('admin page'), 'animatecss.settings')->toString(),
+      ]) . '</p>';
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function animatecss_ui_page_attachments(array &$attachments) {
+  // Don't add the library during installation.
+  if (InstallerKernel::installationAttempted()) {
+    return;
+  }
+
+  // Load the Animate.css configuration settings.
+  $config = \Drupal::config('animatecss.settings');
+
+  // Attach Animate.css to pages with chosen method.
+  $method = animatecss_check_installed() ? $config->get('method') : 'cdn';
+  $compat = $config->get('compat');
+
+  // Checking the path to load Animate.css for demo examples,
+  // It's just in Animatecss configuration.
+  $currentPath = Url::fromRoute('<current>')->toString();
+  $settingPath = Url::fromRoute('animatecss.admin')->toString() . '/*';
+
+  if (\Drupal::service('path.matcher')->matchPath($currentPath, $settingPath)) {
+    $options = $config->get('options');
+    $options['selector'] = '.animate__sample';
+
+    // Attach Animate.css for examples.
+    $attachments['#attached']['drupalSettings']['animatecss']['sample'] = $options;
+    $attachments['#attached']['drupalSettings']['animatecss']['compat'] = $compat;
+
+    if ($method == 'cdn') {
+      $attachments['#attached']['library'][] = 'animatecss_ui/animate-cdn-dev';
+    }
+    else {
+      $attachments['#attached']['library'][] = 'animatecss_ui/animate-dev';
+    }
+    return;
+  }
+
+  // Don't include Animate.css library if the user has opted out of loading it.
+  if (!$config->get('load')) {
+    return TRUE;
+  }
+
+  // Don't add the Animate.css on specified paths.
+  if (!_animatecss_ui_check_url()) {
+    return TRUE;
+  }
+
+  // Check for load development and production version.
+  $variant_options = ['source', 'minified'];
+  $variant = $variant_options[$config->get('minimized.options')];
+  if ($method == 'cdn') {
+    // The Animate.css library is attached with the CDN method.
+    // However, if the compatible version was enabled,
+    // the compatible version of the CDN should be added.
+    if ($compat) {
+      $attachments['#attached']['library'][] = 'animatecss_ui/animate-cdn-compat';
+    }
+    else {
+      // Check variant to load Animate.css from CDN.
+      switch ($variant) {
+        case 'minified':
+          $attachments['#attached']['library'][] = 'animatecss_ui/animate-cdn';
+          break;
+
+        case 'source':
+          $attachments['#attached']['library'][] = 'animatecss_ui/animate-cdn-dev';
+          break;
+      }
+    }
+  }
+  else {
+    // If the compatible version is enabled in the settings,
+    // it will include the compatible version of the Animate.css library.
+    // Because the compatible version is only available in compressed form.
+    if ($compat) {
+      $attachments['#attached']['library'][] = 'animatecss_ui/animate-compat';
+    }
+    else {
+      // Check variant to load Animate.css from local.
+      switch ($variant) {
+        case 'minified':
+          $attachments['#attached']['library'][] = 'animatecss_ui/animate-css';
+          break;
+
+        case 'source':
+          $attachments['#attached']['library'][] = 'animatecss_ui/animate-dev';
+          break;
+      }
+    }
+  }
+
+  // Get selectors from config.
+  $options = $config->get('options');
+  $animated = [];
+
+  // Load enabled animate selectors from database.
+  $results = \Drupal::service('animatecss.animate_manager')->loadAnimate()->fetchAll();
+  if (count($results)) {
+    $selectors = [];
+    foreach ($results as $animate) {
+      $animate_options = unserialize($animate->options, ['allowed_classes' => FALSE]);
+
+      // Support WOW JS Module.
+      if (isset($animate_options['wow']) && $animate_options['wow']['enable']) {
+        continue;
+      }
+
+      // Support AOS JS Module.
+      if (isset($animate_options['aos']) && $animate_options['aos']['enable']) {
+        continue;
+      }
+
+      $selectors[] = $animate->selector;
+      $animated[$animate->aid] = ['selector' => $animate->selector] + $animate_options;
+    }
+
+    // Merge global selectors from config with database selectors.
+    if (count($config->get('options.selector')) && count($selectors)) {
+      $options['selector'] = array_diff($options['selector'], $selectors);
+
+      // Attach config selectors after merge if there were any left.
+      if (count($options['selector'])) {
+        array_unshift($animated, $options);
+      }
+    }
+  }
+  else {
+    // If global selectors are set, get the selectors from the configuration.
+    if (count($config->get('options.selector'))) {
+      $animated = [$options];
+    }
+  }
+
+  // If there is animate selectors, then the init file
+  // with options will be added to the page.
+  if (count($animated)) {
+    // Export settings.
+    $attachments['#attached']['drupalSettings']['animatecss']['elements'] = $animated;
+
+    // If set compatible mode, pass to settings for change class in javascript.
+    if ($compat) {
+      $attachments['#attached']['drupalSettings']['animatecss']['compat'] = $compat;
+    }
+
+    // Init animate.
+    $attachments['#attached']['library'][] = 'animatecss_ui/animate-init';
+  }
+}
+
+/**
+ * Check if Animate.css should be active for the current URL.
+ *
+ * @param \Symfony\Component\HttpFoundation\Request $request
+ *   The request to use if provided, otherwise \Drupal::request() will be used.
+ * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+ *   The request stack.
+ *
+ * @return bool
+ *   TRUE if Animate.css should be active for the current page.
+ */
+function _animatecss_ui_check_url(Request $request = NULL, RequestStack $request_stack = NULL) {
+  if (!isset($request)) {
+    $request = \Drupal::request();
+  }
+
+  // Assume there are no matches until one is found.
+  $page_match = FALSE;
+
+  // Make it possible deactivate letting with
+  // parameter ?animate=no in the url.
+  $query = $request->query;
+  if ($query->get('animate') !== NULL && $query->get('animate') == 'no') {
+    return $page_match;
+  }
+
+  // Convert path to lowercase. This allows comparison of the same path
+  // with different case. Ex: /Page, /page, /PAGE.
+  $config = \Drupal::config('animatecss.settings');
+  $pages  = mb_strtolower(_animatecss_ui_array_to_string($config->get('url.pages')));
+  if (!$pages) {
+    return TRUE;
+  }
+  if (!isset($request_stack)) {
+    $request_stack = \Drupal::requestStack();
+  }
+  $current_request = $request_stack->getCurrentRequest();
+  // Compare the lowercase path alias (if any) and internal path.
+  $path = \Drupal::service('path.current')->getPath($current_request);
+  // Do not trim a trailing slash if that is the complete path.
+  $path = $path === '/' ? $path : rtrim($path, '/');
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $path_alias = mb_strtolower(\Drupal::service('path_alias.manager')->getAliasByPath($path, $langcode));
+  $page_match = \Drupal::service('path.matcher')->matchPath($path_alias, $pages);
+  if ($path_alias != $path) {
+    $page_match = $page_match || \Drupal::service('path.matcher')->matchPath($path, $pages);
+  }
+  $page_match = $config->get('url.visibility') == 0 ? !$page_match : $page_match;
+
+  return $page_match;
+}
+
+/**
+ * Converts a text with lines (\n) into an array of lines.
+ *
+ * @return array
+ *   Array with as many items as non-empty lines in the text
+ */
+function _animatecss_ui_string_to_array($text) {
+  if (!is_string($text)) {
+    return NULL;
+  }
+  $text = str_replace("\r\n", "\n", $text);
+  return array_filter(explode("\n", $text), 'trim');
+}
+
+/**
+ * Converts an array of lines into a text with lines (\n).
+ *
+ * @return string
+ *   Text with lines
+ */
+function _animatecss_ui_array_to_string($array) {
+  if (!is_array($array)) {
+    return NULL;
+  }
+  return implode("\r\n", $array);
+}

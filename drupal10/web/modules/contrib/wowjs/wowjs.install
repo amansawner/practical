@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Install, update, uninstall Requirements functions for the WOW JS module.
+ */
+
+define('WOWJS_DOWNLOAD_URL', 'https://github.com/matthieua/WOW/archive/master.zip');
+
+/**
+ * Implements hook_requirements().
+ */
+function wowjs_requirements($phase) {
+  if ($phase != 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  // Check WOW.js javascript library is exists.
+  /** @var Drupal\Core\Asset\LibraryDiscovery $library_discovery */
+  $library_discovery = \Drupal::service('library.discovery');
+  $library_get_wowjs = $library_discovery->getLibraryByName('wowjs', 'wow-local');
+  $library_exists_js = FALSE;
+
+  // Check if $library_get_wowjs is an array before accessing its elements.
+  if (is_array($library_get_wowjs) && isset($library_get_wowjs['js'][0]['data'])) {
+    $library_exists_js = file_exists(DRUPAL_ROOT . '/' . $library_get_wowjs['js'][0]['data']);
+  }
+
+  // Check if the user has suppressed the library warning in WOW JS UI.
+  $suppress_warning = \Drupal::configFactory()->get('wowjs.settings')->get('hide');
+
+  // Show the status of the library in the status report section.
+  if ($library_exists_js) {
+    $description = t('The WOW.js library was available in the local libraries path and enabled.');
+  }
+  else {
+    $description = t('The WOW.js library is using <strong>CDN</strong> and is not installed in your local libraries.<br>You can <a href="@downloadUrl" rel="external" target="_blank">download</a> and extract to "/libraries/wow" then check file exists in your Drupal installation directory at the correct path "/libraries/wow/dist/wow.min.js".<br>See the WOW JS module README file for more details.', [
+      '@downloadUrl' => WOWJS_DOWNLOAD_URL,
+    ]);
+    // Returns TRUE for the library if the library
+    // warning was hidden when using the CDN method.
+    if ($suppress_warning) {
+      $library_exists_js = TRUE;
+    }
+  }
+
+  $requirements['wowjs'] = [
+    'title'       => t('WOW JS library'),
+    'value'       => $library_exists_js ? t('Installed') : t('Not installed'),
+    'severity'    => $library_exists_js ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+    'description' => $description,
+  ];
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_install().
+ */
+function wowjs_install() {
+  // Check for WOW.js javascript library installation.
+  $library_exists = wowjs_check_installed();
+  if (!$library_exists) {
+    \Drupal::messenger()->addError(t('The WOW JS module requires the WOW.js javascript library.<br>Currently, the WOW.js is loaded via <strong>CDN</strong> and is not available in your local libraries.<br>Please <a href=":downloadUrl">Download</a> and unzip into /libraries/wow directory.', [
+      ':downloadUrl' => WOWJS_DOWNLOAD_URL,
+    ]));
+  }
+
+  \Drupal::messenger()->addStatus(t('Thanks for installing WOW JS module.'));
+}

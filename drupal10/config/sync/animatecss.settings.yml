@@ -1,0 +1,29 @@
+_core:
+  default_config_hash: _KNJ8veOjz6QN8IEn_z4cVDbmpXnruBWk6B9tQA1jwk
+load: true
+silent: false
+method: local
+minimized:
+  options: true
+url:
+  visibility: '0'
+  pages:
+    - '/admin*'
+    - '/imagebrowser*'
+    - '/img_assist*'
+    - '/imce*'
+    - '/node/add*'
+    - '/node/*/edit'
+    - '/print/*'
+    - '/printpdf/*'
+    - /system/ajax
+    - '/system/ajax/*'
+options:
+  selector:
+    - .block
+  animation: fadeInUp
+  delay: ''
+  time: ''
+  speed: medium
+  duration: ''
+  repeat: ''

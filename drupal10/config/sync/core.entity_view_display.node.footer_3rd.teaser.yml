@@ -1,0 +1,34 @@
+uuid: e84b97ef-d6e3-4345-aa7f-c28b63e4a289
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.footer_3rd.body
+    - field.field.node.footer_3rd.field_about_us
+    - field.field.node.footer_3rd.field_long_contact_us
+    - node.type.footer_3rd
+  module:
+    - text
+    - user
+id: node.footer_3rd.teaser
+targetEntityType: node
+bundle: footer_3rd
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_about_us: true
+  field_long_contact_us: true

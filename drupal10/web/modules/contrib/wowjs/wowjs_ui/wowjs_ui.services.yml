@@ -1,0 +1,10 @@
+services:
+  wowjs.wow_manager:
+    class: Drupal\wowjs_ui\WowJsManager
+    arguments: [ '@database' ]
+    tags:
+      - { name: backend_overridable }
+  wowjs.route_subscriber:
+    class: Drupal\wowjs_ui\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

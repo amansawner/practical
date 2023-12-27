@@ -1,0 +1,213 @@
+<?php
+
+/**
+ * @file
+ * Drupal`s integration with WOW.js library.
+ *
+ * WOW.js is a javascript library to reveal CSS animation
+ * as you scroll down a page.
+ *
+ * By default, you can use it to trigger animate.css animations.
+ * But you can easily change the settings to your favorite animation library.
+ *
+ * Github:  https://github.com/matthieua/WOW
+ * Website: https://www.delac.io/WOW
+ * license: MIT licensed
+ *
+ * Copyright (C) 2013-2023 Matt Delac
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Installer\InstallerKernel;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function wowjs_ui_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.wowjs_ui':
+      $output  = '<h3 class="animate__animated animate__bounce">' . t('About') . '</h3>';
+      $output .= '<p class="animate__animated animate__fadeInUp animate__delay-1s">' . t('The WOW JS UI provides new options in add animation form of AnimateCSS UI, which can enable WOW and trigger animation when you scroll down the page to see that HTML element.') . '</p>';
+      $output .= '<h3 class="animate__animated animate__zoomIn animate__delay-2s">' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt class="animate__animated animate__flipInX animate__delay-3s">' . t('Default WOW settings') . '</dt>';
+      $output .= '<dd class="animate__animated animate__slideInLeft animate__delay-4s"><p>' . t('You can change default WOW options in <a href=":wow_settings">AnimateCSS UI settings</a> section in your Drupal configuration.', [':wow_settings' => Url::fromRoute('animatecss.settings')->toString()]) . '</p></dd>';
+      $output .= '</dl>';
+      $output .= '<dl>';
+      $output .= '<dt class="animate__animated animate__flipInX animate__delay-3s">' . t('Enable WOW') . '</dt>';
+      $output .= '<dd class="animate__animated animate__slideInLeft animate__delay-4s"><p>' . t('To using animation with WOW you can enable it in down of <a href=":wow_enable">Add animation</a> form.', [':wow_enable' => Url::fromRoute('animatecss.add')->toString()]) . '</p></dd>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function wowjs_ui_page_attachments(array &$attachments) {
+  // Don't add the WOW.js library during installation.
+  if (InstallerKernel::installationAttempted()) {
+    return;
+  }
+
+  $animate_config = \Drupal::config('animatecss.settings');
+
+  // Don't include WOW.js library on specified paths or the user has
+  // opted out the Animate.css of loading it.
+  if (!$animate_config->get('load') || !_animatecss_ui_check_url()) {
+    return TRUE;
+  }
+
+  $wow_config = \Drupal::config('wowjs.settings');
+
+  // Attach WOW.js to pages with chosen method.
+  $method = wowjs_check_installed() ? $wow_config->get('method') : 'cdn';
+  $compat = $animate_config->get('compat');
+
+  // Check for load development and production version.
+  $variant_options = ['source', 'minified'];
+  $variant = $variant_options[$wow_config->get('minimized.options')];
+  if ($method == 'cdn') {
+    // Check variant to load wow from CDN.
+    switch ($variant) {
+      case 'minified':
+        $attachments['#attached']['library'][] = 'wowjs_ui/wow.cdn';
+        break;
+
+      case 'source':
+        $attachments['#attached']['library'][] = 'wowjs_ui/wow.cdn.dev';
+        break;
+    }
+  }
+  else {
+    // Check variant to load wow from local.
+    switch ($variant) {
+      case 'minified':
+        $attachments['#attached']['library'][] = 'wowjs_ui/wow.js';
+        break;
+
+      case 'source':
+        $attachments['#attached']['library'][] = 'wowjs_ui/wow.dev';
+        break;
+    }
+  }
+
+  // Get stored animate selectors from database.
+  $records = [];
+  $results = \Drupal::service('animatecss.animate_manager')->loadAnimate()->fetchAll();
+  if (count($results)) {
+    foreach ($results as $animate) {
+      $animate_options = unserialize($animate->options, ['allowed_classes' => FALSE]);
+
+      // Check wow is enabled then add to records.
+      if (isset($animate_options['wow']) && $animate_options['wow']['enable']) {
+        $records[$animate->aid] = ['selector' => $animate->selector] + $animate_options;
+      }
+    }
+  }
+
+  // If there is animate selectors, then the init file
+  // with options will be added to the page.
+  if (count($records)) {
+    // Export settings.
+    $attachments['#attached']['drupalSettings']['wowjs']['elements'] = $records;
+    $attachments['#attached']['drupalSettings']['wowjs']['wowClass'] = $wow_config->get('options.classBox');
+
+    // If set compatible mode, pass to settings for change class in javascript.
+    if ($compat) {
+      $attachments['#attached']['drupalSettings']['wowjs']['compat'] = $compat;
+    }
+
+    // Init WOW.
+    $attachments['#attached']['library'][] = 'wowjs_ui/wow-init';
+  }
+}
+
+/**
+ * Implements hook_animatecss_scroll_options().
+ */
+function wowjs_ui_animatecss_scroll_library_options($options) {
+  // Load the WOW JS configuration settings.
+  $config = \Drupal::config('wowjs.settings');
+  $libraries_info['wow'] = [
+    'name' => 'WOW',
+    'description' => 'Reveal CSS animation as you scroll down a page.',
+    'fields' => [
+      'wow_offset' => [
+        '#type'          => 'number',
+        '#min'           => 0,
+        '#title'         => t('Offset'),
+        '#default_value' => $options['wow']['offset'] ?? $config->get('options.offset'),
+        '#field_suffix'  => 'px',
+      ],
+      'mobile' => [
+        '#type'          => 'checkbox',
+        '#title'         => t('Mobile'),
+        '#description'   => t("Trigger animations on mobile devices."),
+        '#default_value' => $options['wow']['mobile'] ?? $config->get('options.mobile'),
+      ],
+      'live' => [
+        '#type'          => 'checkbox',
+        '#title'         => t('Live'),
+        '#description'   => t("Act on asynchronously loaded content."),
+        '#default_value' => $options['wow']['live'] ?? $config->get('options.live'),
+      ],
+      'optional_container' => [
+        '#type'          => 'checkbox',
+        '#title'         => t('Scroll container'),
+        '#description'   => t('Optional scroll container selector, otherwise use window.'),
+        '#default_value' => $options['wow']['optionalContainer'] ?? $config->get('options.optionalContainer'),
+      ],
+      'scroll_container' => [
+        '#type'          => 'textfield',
+        '#title_display' => 'invisible',
+        '#title'         => t('Container selector'),
+        '#description'   => t('Scroll container selector.'),
+        '#default_value' => $options['wow']['scrollContainer'] ?? $config->get('options.scrollContainer'),
+        '#states'        => [
+          'visible' => [
+            ':input[name="optional_container"]' => ['checked' => TRUE],
+          ],
+        ],
+      ],
+    ],
+  ];
+  return $libraries_info;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function wowjs_ui_form_animatecss_form_alter(&$form, FormStateInterface $form_state, $animate) {
+  array_unshift($form['actions']['submit']['#submit'], 'wowjs_ui_form_animatecss_form_submit');
+  if (isset($form['actions']['overview'])) {
+    array_unshift($form['actions']['overview']['#submit'], 'wowjs_ui_form_animatecss_form_submit');
+  }
+}
+
+/**
+ * Form submission handler for animatecss_form().
+ *
+ * @see wowjs_ui_form_animatecss_form_alter()
+ */
+function wowjs_ui_form_animatecss_form_submit($form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+
+  // Provides variables.
+  $variables = $values['variables'];
+
+  // The WOW main variables.
+  $variables['wow']['enable'] = $values['wow'];
+  $variables['wow']['offset'] = $values['wow_offset'];
+  $variables['wow']['mobile'] = $values['mobile'];
+  $variables['wow']['live']   = $values['live'];
+
+  // The WOW advanced wow settings.
+  $variables['wow']['optionalContainer'] = $values['optional_container'];
+  $variables['wow']['scrollContainer']   = $values['scroll_container'];
+
+  // Set wow variables.
+  $form_state->setValue('variables', $variables);
+}

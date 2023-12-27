@@ -1,0 +1,24 @@
+uuid: 89a336f2-2ece-4f74-97a8-d56ad2b6d3ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.menu_content.field_logo
+    - field.field.node.menu_content.field_menu_links
+    - node.type.menu_content
+  module:
+    - user
+id: node.menu_content.teaser
+targetEntityType: node
+bundle: menu_content
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_logo: true
+  field_menu_links: true

@@ -1,0 +1,158 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the AnimateCSS module.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_schema().
+ */
+function animatecss_ui_schema() {
+  $schema['animatecss'] = [
+    'description' => 'Stores animate css selectors.',
+    'fields' => [
+      'aid' => [
+        'description' => 'Primary Key: unique ID for animate css selectors.',
+        'type'        => 'serial',
+        'unsigned'    => TRUE,
+        'not null'    => TRUE,
+      ],
+      'selector' => [
+        'description' => 'Animate css selector.',
+        'type'        => 'varchar',
+        'length'      => 255,
+        'not null'    => TRUE,
+        'default'     => '',
+      ],
+      'label' => [
+        'description' => 'Label of animate css.',
+        'type'        => 'varchar',
+        'length'      => 255,
+        'not null'    => TRUE,
+        'default'     => '',
+      ],
+      'comment' => [
+        'description' => 'Comment for animate css.',
+        'type'        => 'text',
+        'size'        => 'big',
+        'not null'    => TRUE,
+      ],
+      'changed' => [
+        'description' => 'Timestamp when the animate was most recently modified.',
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+        'not null'    => TRUE,
+        'default'     => 0,
+        'size'        => 'big',
+      ],
+      'status' => [
+        'description' => 'Boolean indicating whether the animate is enabled.',
+        'type'        => 'int',
+        'not null'    => FALSE,
+        'default'     => 0,
+        'size'        => 'tiny',
+      ],
+      'options' => [
+        'type'        => 'blob',
+        'not null'    => TRUE,
+        'size'        => 'big',
+        'description' => 'The options data in serialized form.',
+      ],
+    ],
+    'indexes' => [
+      'label'    => ['label'],
+      'selector' => ['selector'],
+      'changed'  => ['changed'],
+    ],
+    'primary key' => ['aid'],
+  ];
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function animatecss_ui_install() {
+  // Add AnimateCSS settings link status.
+  \Drupal::messenger()->addStatus(t('Configure AnimateCSS <a href=":settings">global settings</a>.', [
+    ':settings' => Url::fromRoute('animatecss.settings')->toString(),
+  ]));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function animatecss_ui_uninstall() {
+  // If uninstall and re-install animatecss_ui module will show error:
+  // Unable to install AnimateCSS UI, animatecss.settings already
+  // exists in active configuration.
+  $query = \Drupal::database()->delete('config');
+  // Delete set variables in animatecss_ui uninstall, because
+  // of name "animatecss.settings" it will delete in "animatecss"
+  // module uninstall, will not delete in "animatecss_ui" uninstall.
+  $query->condition('name', 'animatecss.settings');
+  $query->execute();
+}
+
+/**
+ * Added new features.
+ */
+function animatecss_ui_update_8001() {
+  // Do nothing to clear cache.
+}
+
+/**
+ * Added a new field for animate status and change.
+ */
+function animatecss_ui_update_8002() {
+  $connection = \Drupal::database();
+  // Add any missing columns to the animatecss table.
+  if ($connection->schema()->tableExists('animatecss') && $connection->databaseType() != 'sqlite') {
+    // Add changed field to animatecss table.
+    if (!$connection->schema()->fieldExists('animatecss', 'changed')) {
+      $current = \Drupal::time()->getCurrentTime();
+      $new = [
+        'description' => 'Timestamp when the animate was most recently modified.',
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+        'not null'    => TRUE,
+        'default'     => $current,
+        'size'        => 'big',
+      ];
+      $connection->schema()->addField('animatecss', 'changed', $new);
+    }
+
+    // Add status field to animatecss table.
+    if (!$connection->schema()->fieldExists('animatecss', 'status')) {
+      $new = [
+        'description' => 'Boolean indicating whether the animate is enabled.',
+        'type'        => 'int',
+        'not null'    => FALSE,
+        'default'     => 1,
+        'size'        => 'tiny',
+      ];
+      $connection->schema()->addField('animatecss', 'status', $new);
+    }
+  }
+}
+
+/**
+ * Added a new field for animate warning silent configuration.
+ */
+function animatecss_ui_update_8003() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('animatecss.settings');
+  // Add new silent configuration field.
+  $config->set('silent', FALSE);
+  $config->save(TRUE);
+}
+
+/**
+ * Fixed warning issues.
+ */
+function animatecss_ui_update_8004() {
+  // Do nothing to clear cache.
+}

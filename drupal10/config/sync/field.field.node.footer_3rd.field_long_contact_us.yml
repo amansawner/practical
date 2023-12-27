@@ -1,0 +1,23 @@
+uuid: 5958ff9e-b347-428b-8006-af696ee63a65
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_long_contact_us
+    - node.type.footer_3rd
+  module:
+    - text
+id: node.footer_3rd.field_long_contact_us
+field_name: field_long_contact_us
+entity_type: node
+bundle: footer_3rd
+label: 'long contact us'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

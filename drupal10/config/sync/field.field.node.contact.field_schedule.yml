@@ -1,0 +1,33 @@
+uuid: f29d306e-73de-4018-bdbd-c5ced4fd1250
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_schedule
+    - node.type.contact
+    - webform.webform.schedule_a_call
+  module:
+    - webform
+id: node.contact.field_schedule
+field_name: field_schedule
+entity_type: node
+bundle: contact
+label: schedule
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    target_uuid: cec57a9b-be0a-4501-a645-4ff27ec087f4
+    default_data: ''
+    status: open
+    open: ''
+    close: ''
+    webform_access_group: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: webform

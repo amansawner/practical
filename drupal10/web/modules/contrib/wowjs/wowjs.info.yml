@@ -1,0 +1,12 @@
+name: 'WOW JS'
+type: module
+description: 'Integrates WOW.js library, Reveal CSS animation as you scroll down a page.'
+core_version_requirement: ^8 || ^9 || ^10
+package: Animate CSS
+dependencies:
+  - animatecss:animatecss (>=1.0.3)
+
+# Information added by Drupal.org packaging script on 2023-11-13
+version: '1.0.3'
+project: 'wowjs'
+datestamp: 1699872209

@@ -1,0 +1,46 @@
+uuid: e7b21c6f-600b-4520-b4bf-7e89737c83e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.menu_content.field_logo
+    - field.field.node.menu_content.field_menu_links
+    - node.type.menu_content
+  module:
+    - image
+    - link
+    - user
+id: node.menu_content.default
+targetEntityType: node
+bundle: menu_content
+mode: default
+content:
+  field_logo:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_menu_links:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

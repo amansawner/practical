@@ -1,0 +1,50 @@
+uuid: dd660815-7d7e-4d07-94b9-08dc06700000
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.footer_1st.field_contacty
+    - field.field.node.footer_1st.field_lets_talk
+    - field.field.node.footer_1st.field_social
+    - node.type.footer_1st
+  module:
+    - link
+    - social_link_field
+    - user
+id: node.footer_1st.default
+targetEntityType: node
+bundle: footer_1st
+mode: default
+content:
+  field_contacty:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_lets_talk:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_social:
+    type: font_awesome
+    label: hidden
+    settings:
+      icon_type: common
+      orientation: vertical
+      new_tab: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  links: true

@@ -1,0 +1,22 @@
+uuid: 285614ab-b6c3-4cd3-af9a-a5086ed7e847
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.our_works_webform.field_weborm_bef
+    - node.type.our_works_webform
+  module:
+    - user
+id: node.our_works_webform.teaser
+targetEntityType: node
+bundle: our_works_webform
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_weborm_bef: true

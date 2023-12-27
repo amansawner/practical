@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Install, update, uninstall Requirements functions for the AnimateCSS module.
+ */
+
+define('ANIMATECSS_DOWNLOAD_URL', 'https://github.com/animate-css/animate.css/archive/main.zip');
+
+/**
+ * Implements hook_requirements().
+ */
+function animatecss_requirements($phase) {
+  if ($phase != 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  // Check Animate.css library is exists.
+  /** @var Drupal\Core\Asset\LibraryDiscovery $library_discovery */
+  $library_discovery = \Drupal::service('library.discovery');
+  $library_animate = $library_discovery->getLibraryByName('animatecss', 'animate.css');
+  $library_exists = FALSE;
+
+  // Check if $library_animate is an array before accessing its elements.
+  if (is_array($library_animate) && isset($library_animate['css'][0]['data'])) {
+    $library_exists = file_exists(DRUPAL_ROOT . '/' . $library_animate['css'][0]['data']);
+  }
+
+  // Check if the user has suppressed the library warning in AnimateCSS UI.
+  $silent_warning = \Drupal::configFactory()->get('animatecss.settings')->get('silent');
+
+  // Show the status of the library in the status report section.
+  if ($library_exists) {
+    $description = t('The Animate.css library was available in the local libraries path and enabled.');
+  }
+  else {
+    $description = t('The Animate.css library is using <strong>CDN</strong> and is not installed in your local libraries.<br>You can <a href="@downloadUrl" rel="external" target="_blank">download</a> and extract to "/libraries/animate.css" then check file exists in your Drupal installation directory at the correct path "/libraries/animate.css/animate.min.css".<br>See the AnimateCSS module README file for more details.', [
+      '@downloadUrl' => ANIMATECSS_DOWNLOAD_URL,
+    ]);
+    // Returns TRUE for the library if the library
+    // warning was hidden when using the CDN method.
+    if ($silent_warning) {
+      $library_exists = TRUE;
+    }
+  }
+
+  // Prepares library requirements status.
+  $requirements['animatecss'] = [
+    'title'       => t('Animate.css library'),
+    'value'       => $library_exists ? t('Installed') : t('Not installed'),
+    'severity'    => $library_exists ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    'description' => $description,
+  ];
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_install().
+ */
+function animatecss_install() {
+  // Check for Animate.css library installation.
+  $library_exists = animatecss_check_installed();
+  if (!$library_exists) {
+    \Drupal::messenger()->addWarning(t('The AnimateCSS module requires the Animate.css library. Currently, the Animate.css is not installed in your local libraries and is loaded from CDN. Please <a href=":downloadUrl" rel="external" target="_blank">Download</a> and unzip into /libraries/animate.css.', [
+      ':downloadUrl' => ANIMATECSS_DOWNLOAD_URL,
+    ]));
+  }
+
+  \Drupal::messenger()->addStatus(t('Thanks for installing AnimateCSS module.'));
+}

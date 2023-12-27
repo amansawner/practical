@@ -1,0 +1,36 @@
+wowjs.settings:
+  type: mapping
+  label: 'WOW JS Settings'
+  mapping:
+    hide:
+      type: boolean
+      label: 'Hide warning message'
+    method:
+      type: string
+      label: 'Loading WOW.js library method'
+    minimized:
+      options:
+        type: integer
+        label: 'Minimized'
+    options:
+      classBox:
+        type: array
+        label: 'Class'
+      animateClass:
+        type: string
+        label: 'Animation css class'
+      offset:
+        type: integer
+        label: 'Offset'
+      mobile:
+        type: boolean
+        label: 'Mobile'
+      live:
+        type: boolean
+        label: 'Speed'
+      optionalContainer:
+        type: boolean
+        label: 'Duration'
+      scrollContainer:
+        type: string
+        label: 'Repeat'

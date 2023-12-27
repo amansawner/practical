@@ -1,0 +1,5 @@
+animatecss.add:
+  route_name: animatecss.add
+  title: 'Add animation'
+  appears_on:
+    - animatecss.admin

@@ -1,0 +1,25 @@
+uuid: bc89b770-7360-4b62-9e80-874319b5af16
+langcode: en
+status: true
+dependencies:
+  module:
+    - hct
+    - system
+  theme:
+    - eitb
+id: frontpageblock
+theme: eitb
+region: header
+weight: 0
+provider: null
+plugin: front
+settings:
+  id: front
+  label: 'frontpage Block'
+  label_display: '0'
+  provider: hct
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

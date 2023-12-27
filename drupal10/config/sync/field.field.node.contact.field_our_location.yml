@@ -1,0 +1,23 @@
+uuid: 30b767d1-9db9-4029-befe-affca1fd5f5f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_our_location
+    - node.type.contact
+  module:
+    - text
+id: node.contact.field_our_location
+field_name: field_our_location
+entity_type: node
+bundle: contact
+label: 'our Location'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

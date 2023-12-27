@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: MsQav25W1K1iz76qzfIs5Fj_ipjUHJF5too1rHqQx2M
+hide: false
+method: local
+minimized:
+  options: true
+options:
+  classBox:
+    - wow
+  animateClass: animate__animated
+  offset: 0
+  mobile: true
+  live: true
+  optionalContainer: false
+  scrollContainer: window

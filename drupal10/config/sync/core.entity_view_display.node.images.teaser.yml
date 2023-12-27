@@ -1,0 +1,26 @@
+uuid: 256dd15f-1f54-4b11-97e5-25bf7e3ff785
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.images.field_image_text
+    - field.field.node.images.field_images
+    - field.field.node.images.field_tax
+    - node.type.images
+  module:
+    - user
+id: node.images.teaser
+targetEntityType: node
+bundle: images
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_image_text: true
+  field_images: true
+  field_tax: true

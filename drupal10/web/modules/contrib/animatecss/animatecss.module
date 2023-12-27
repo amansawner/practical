@@ -1,0 +1,416 @@
+<?php
+
+/**
+ * @file
+ * Drupal`s integration with Animate.css library.
+ *
+ * Animate.css is a library of ready-to-use, cross-browser animations
+ * for use in your web projects. Great for emphasis, home pages, sliders,
+ * and attention-guiding hints.
+ *
+ * Github:  https://github.com/animate-css/animate.css
+ * Website: https://animate.style/
+ * license: MIT licensed
+ *
+ * Copyright (C) 2021-2023 Daniel Eden
+ */
+
+use Drupal\Core\Installer\InstallerKernel;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function animatecss_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.animatecss':
+      $output  = '<h3 class="animate__animated animate__bounce">' . t('About') . '</h3>';
+      $output .= '<p class="animate__animated animate__fadeInUp animate__delay-1s">' . t('The AnimateCSS is a module that aims to integrate <a href=":animate_library">Animate.css</a> library with Drupal. Animate.css is a library of ready-to-use, cross-browser animations for use in your web projects. Great for emphasis, home pages, sliders, and attention-guiding hints. AnimateCSS module allows you to quickly attach Animate.css library in your page.', [':animate_library' => 'https://animate.style/']) . '</p>';
+      $output .= '<h3 class="animate__animated animate__zoomIn animate__delay-2s">' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt class="animate__animated animate__flipInX animate__delay-3s">' . t('Basic usage') . '</dt>';
+      $output .= '<dd class="animate__animated animate__slideInLeft animate__delay-4s"><p>' . t('Add the class animate__animated to an element, along with any of the animation names (do not forget the animate__ prefix!)') . '</p>';
+      $output .= '<pre><code>';
+      $output .= '&lt;h1 class="animate__animated animate__bounce"&gt;An animated element&lt;/h1&gt;' . "\n";
+      $output .= '</code></pre></dd>';
+      $output .= '<dt class="animate__animated animate__flipInX animate__delay-3s">' . t('Usage with Javascript') . '</dt>';
+      $output .= '<dd class="animate__animated animate__slideInRight animate__delay-4s"><p>' . t('You can do a whole bunch of other stuff with animate.css when you combine it with Javascript.') . '</p>';
+      $output .= '<pre>';
+      $output .= "const element = document.querySelector('.my-element');" . "\n";
+      $output .= "element.classList.add('animate__animated', 'animate__bounceOutLeft');";
+      $output .= '</pre></dd>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
+
+/**
+ * Check to make sure that Animate.css library is installed.
+ *
+ * @return bool
+ *   Flag indicating if the library is properly installed.
+ */
+function animatecss_check_installed() {
+  // Throw error if Animate.css library file not found.
+  /** @var Drupal\Core\Asset\LibraryDiscovery $library_discovery */
+  $library_discovery = \Drupal::service('library.discovery');
+  $library_exists = FALSE;
+  $definition = $library_discovery->getLibraryByName('animatecss', 'animate.css');
+
+  // Check if $definition is an array before accessing its elements.
+  if (is_array($definition) && isset($definition['css'][0]['data'])) {
+    $library_exists = file_exists(DRUPAL_ROOT . '/' . $definition['css'][0]['data']);
+  }
+
+  return $library_exists;
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function animatecss_page_attachments(array &$attachments) {
+  // Don't add the Library during installation.
+  if (InstallerKernel::installationAttempted()) {
+    return;
+  }
+
+  // Check first AnimateCSS UI module is not installed and library not exists.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('animatecss_ui')) {
+    // Check if Animate.css library not exist in local library then
+    // attach the latest version of Animate.css automatically from CDN.
+    if (animatecss_check_installed()) {
+      $attachments['#attached']['library'][] = 'animatecss/animate.css';
+    }
+    else {
+      $attachments['#attached']['library'][] = 'animatecss/animate.cdn';
+    }
+  }
+}
+
+/**
+ * Animate.css Animation options.
+ */
+function animatecss_animation_options($mode = 'both', $grouping = TRUE, $names = []) {
+  $modes = ['entrances', 'exits'];
+  $animations = [];
+  $animation_names = animatecss_animation_names();
+  foreach ($animation_names as $name => $animation_name) {
+    if (count($names) && !in_array($name, $names)) {
+      continue;
+    }
+    foreach ($animation_name as $key => $animation) {
+      if (in_array($mode, $modes) && $key != 'both' && $mode != $key) {
+        continue;
+      }
+      if ($grouping) {
+        $animations = array_merge($animations, $animation);
+      }
+      else {
+        foreach ($animation as $animate) {
+          $animations = array_merge($animations, $animate);
+        }
+      }
+    }
+  }
+  return $animations;
+}
+
+/**
+ * Animate.css animation names.
+ */
+function animatecss_animation_names($animation_name = '') {
+  $animation_names = array_reverse(\Drupal::moduleHandler()->invokeAll('animatecss_animation_names', [$animation_name]));
+
+  // Attention seekers.
+  $animation_names['attention'] = [
+    'both' => [
+      'Attention seekers' => [
+        'bounce'     => t('bounce'),
+        'flash'      => t('flash'),
+        'flip'       => t('flip'),
+        'pulse'      => t('pulse'),
+        'rubberBand' => t('rubberBand'),
+        'shakeX'     => t('shakeX'),
+        'shakeY'     => t('shakeY'),
+        'headShake'  => t('headShake'),
+        'swing'      => t('swing'),
+        'tada'       => t('tada'),
+        'wobble'     => t('wobble'),
+        'jello'      => t('jello'),
+        'heartBeat'  => t('heartBeat'),
+      ],
+    ],
+  ];
+
+  // Back entrances and exits.
+  $animation_names['back'] = [
+    'entrances' => [
+      'Back entrances' => [
+        'backInDown'  => t('backInDown'),
+        'backInLeft'  => t('backInLeft'),
+        'backInRight' => t('backInRight'),
+        'backInUp'    => t('backInUp'),
+      ],
+    ],
+    'exits' => [
+      'Back exits' => [
+        'backOutDown'  => t('backOutDown'),
+        'backOutLeft'  => t('backOutLeft'),
+        'backOutRight' => t('backOutRight'),
+        'backOutUp'    => t('backOutUp'),
+      ],
+    ],
+  ];
+
+  // Bouncing entrances and exits.
+  $animation_names['bouncing'] = [
+    'entrances' => [
+      'Bouncing entrances' => [
+        'bounceIn'      => t('bounceIn'),
+        'bounceInDown'  => t('bounceInDown'),
+        'bounceInLeft'  => t('bounceInLeft'),
+        'bounceInRight' => t('bounceInRight'),
+        'bounceInUp'    => t('bounceInUp'),
+      ],
+    ],
+    'exits' => [
+      'Bouncing exits' => [
+        'bounceOut'      => t('bounceOut'),
+        'bounceOutDown'  => t('bounceOutDown'),
+        'bounceOutLeft'  => t('bounceOutLeft'),
+        'bounceOutRight' => t('bounceOutRight'),
+        'bounceOutUp'    => t('bounceOutUp'),
+      ],
+    ],
+  ];
+
+  // Fading entrances and exits.
+  $animation_names['fading'] = [
+    'entrances' => [
+      'Fading entrances' => [
+        'fadeIn'            => t('fadeIn'),
+        'fadeInDown'        => t('fadeInDown'),
+        'fadeInDownBig'     => t('fadeInDownBig'),
+        'fadeInLeft'        => t('fadeInLeft'),
+        'fadeInLeftBig'     => t('fadeInLeftBig'),
+        'fadeInRight'       => t('fadeInRight'),
+        'fadeInRightBig'    => t('fadeInRightBig'),
+        'fadeInUp'          => t('fadeInUp'),
+        'fadeInUpBig'       => t('fadeInUpBig'),
+        'fadeInTopLeft'     => t('fadeInTopLeft'),
+        'fadeInTopRight'    => t('fadeInTopRight'),
+        'fadeInBottomLeft'  => t('fadeInBottomLeft'),
+        'fadeInBottomRight' => t('fadeInBottomRight'),
+      ],
+    ],
+    'exits' => [
+      'Fading exits' => [
+        'fadeOut'            => t('fadeOut'),
+        'fadeOutDown'        => t('fadeOutDown'),
+        'fadeOutDownBig'     => t('fadeOutDownBig'),
+        'fadeOutLeft'        => t('fadeOutLeft'),
+        'fadeOutLeftBig'     => t('fadeOutLeftBig'),
+        'fadeOutRight'       => t('fadeOutRight'),
+        'fadeOutRightBig'    => t('fadeOutRightBig'),
+        'fadeOutUp'          => t('fadeOutUp'),
+        'fadeOutUpBig'       => t('fadeOutUpBig'),
+        'fadeOutTopLeft'     => t('fadeOutTopLeft'),
+        'fadeOutTopRight'    => t('fadeOutTopRight'),
+        'fadeOutBottomRight' => t('fadeOutBottomRight'),
+        'fadeOutBottomLeft'  => t('fadeOutBottomLeft'),
+      ],
+    ],
+  ];
+
+  // Flipping entrances and exits.
+  $animation_names['flippers'] = [
+    'entrances' => [
+      'Flipping entrances' => [
+        'flipInX'  => t('flipInX'),
+        'flipInY'  => t('flipInY'),
+      ],
+    ],
+    'exits' => [
+      'Flipping exits' => [
+        'flipOutX' => t('flipOutX'),
+        'flipOutY' => t('flipOutY'),
+      ],
+    ],
+  ];
+
+  // Lightspeed entrances and exits.
+  $animation_names['lightspeed'] = [
+    'entrances' => [
+      'Lightspeed entrances' => [
+        'lightSpeedInRight'  => t('lightSpeedInRight'),
+        'lightSpeedInLeft'   => t('lightSpeedInLeft'),
+      ],
+    ],
+    'exits' => [
+      'Lightspeed exits' => [
+        'lightSpeedOutRight' => t('lightSpeedOutRight'),
+        'lightSpeedOutLeft'  => t('lightSpeedOutLeft'),
+      ],
+    ],
+  ];
+
+  // Rotating entrances and exits.
+  $animation_names['rotating'] = [
+    'entrances' => [
+      'Rotating entrances' => [
+        'rotateIn'          => t('rotateIn'),
+        'rotateInDownLeft'  => t('rotateInDownLeft'),
+        'rotateInDownRight' => t('rotateInDownRight'),
+        'rotateInUpLeft'    => t('rotateInUpLeft'),
+        'rotateInUpRight'   => t('rotateInUpRight'),
+      ],
+    ],
+    'exits' => [
+      'Rotating exits' => [
+        'rotateOut'          => t('rotateOut'),
+        'rotateOutDownLeft'  => t('rotateOutDownLeft'),
+        'rotateOutDownRight' => t('rotateOutDownRight'),
+        'rotateOutUpLeft'    => t('rotateOutUpLeft'),
+        'rotateOutUpRight'   => t('rotateOutUpRight'),
+      ],
+    ],
+  ];
+
+  // Specials entrances and exits.
+  $animation_names['specials'] = [
+    'entrances' => [
+      'Specials entrances' => [
+        'jackInTheBox' => t('jackInTheBox'),
+        'rollIn'       => t('rollIn'),
+      ],
+    ],
+    'exits' => [
+      'Specials exits' => [
+        'hinge'        => t('hinge'),
+        'rollOut'      => t('rollOut'),
+      ],
+    ],
+  ];
+
+  // Zooming entrances and exits.
+  $animation_names['zooming'] = [
+    'entrances' => [
+      'Zooming entrances' => [
+        'zoomIn'      => t('zoomIn'),
+        'zoomInDown'  => t('zoomInDown'),
+        'zoomInLeft'  => t('zoomInLeft'),
+        'zoomInRight' => t('zoomInRight'),
+        'zoomInUp'    => t('zoomInUp'),
+      ],
+    ],
+    'exits' => [
+      'Zooming exits' => [
+        'zoomOut'      => t('zoomOut'),
+        'zoomOutDown'  => t('zoomOutDown'),
+        'zoomOutLeft'  => t('zoomOutLeft'),
+        'zoomOutRight' => t('zoomOutRight'),
+        'zoomOutUp'    => t('zoomOutUp'),
+      ],
+    ],
+  ];
+
+  // Sliding entrances and exits.
+  $animation_names['sliding'] = [
+    'entrances' => [
+      'Sliding entrances' => [
+        'slideInDown'  => t('slideInDown'),
+        'slideInLeft'  => t('slideInLeft'),
+        'slideInRight' => t('slideInRight'),
+        'slideInUp'    => t('slideInUp'),
+      ],
+    ],
+    'exits' => [
+      'Sliding exits' => [
+        'slideOutDown'  => t('slideOutDown'),
+        'slideOutLeft'  => t('slideOutLeft'),
+        'slideOutRight' => t('slideOutRight'),
+        'slideOutUp'    => t('slideOutUp'),
+      ],
+    ],
+  ];
+
+  return $animation_names;
+}
+
+/**
+ * Animate.css delay options.
+ */
+function animatecss_delay_options() {
+  return [
+    ''         => t('-- No delay --'),
+    'delay-1s' => t('Delay 1s'),
+    'delay-2s' => t('Delay 2s'),
+    'delay-3s' => t('Delay 3s'),
+    'delay-4s' => t('Delay 4s'),
+    'delay-5s' => t('Delay 5s'),
+    'custom'   => t('Customize'),
+  ];
+}
+
+/**
+ * Animate.css speed options.
+ */
+function animatecss_speed_options() {
+  return [
+    'slower'  => t('Slower'),
+    'slow'    => t('Slow'),
+    'medium'  => t('Medium'),
+    'fast'    => t('Fast'),
+    'faster'  => t('Faster'),
+    'custom'  => t('Customize'),
+  ];
+}
+
+/**
+ * Animate.css delay options.
+ */
+function animatecss_repeat_options() {
+  return [
+    'repeat-1' => t('Repeat 1 time'),
+    'repeat-2' => t('Repeat 2 times'),
+    'repeat-3' => t('Repeat 3 times'),
+    'infinite' => t('Repeat infinite'),
+  ];
+}
+
+/**
+ * Animate.css jQuery event options.
+ */
+function animatecss_event_options() {
+  return [
+    // 'none'       => t('-- No event --'),
+    'onload'     => t('On page load'),
+    'scroll'     => t('On page scroll'),
+    'click'      => t('Click'),
+    'mouseover'  => t('Hover'),
+    'mouseout'   => t('Mouse Out'),
+    'mousedown'  => t('Mouse Down'),
+    'mouseup'    => t('Mouse Up'),
+    'mouseenter' => t('Mouse Enter'),
+    'mouseleave' => t('Mouse Leave'),
+    'mousemove'  => t('Mouse Move'),
+  ];
+}
+
+/**
+ * Animate.css scroll library options.
+ */
+function animatecss_scroll_options($options) {
+  $libraries_info = array_reverse(\Drupal::moduleHandler()->invokeAll('animatecss_scroll_library_options', [$options]));
+  $scroll_options = [];
+  foreach ($libraries_info as $library => $info) {
+    if (preg_match('#^[a-z]*$#', $library)) {
+      if (!isset($info['name']) || empty(trim($info['name'])) || !isset($info['description']) || empty(trim($info['description']))) {
+        continue;
+      }
+      $scroll_options[$library] = $info;
+    }
+  }
+  return $scroll_options;
+}

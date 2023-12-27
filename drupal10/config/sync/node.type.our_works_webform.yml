@@ -1,0 +1,18 @@
+uuid: 2c5b972e-0d6a-499c-840a-6f6deef0054c
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'our works webform'
+type: our_works_webform
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

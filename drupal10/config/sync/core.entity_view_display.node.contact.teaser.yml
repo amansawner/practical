@@ -1,0 +1,42 @@
+uuid: 683b32ec-27fc-42f5-82c5-b2e8d2ffdc86
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.contact.body
+    - field.field.node.contact.field_1st_webform
+    - field.field.node.contact.field_contact_us_
+    - field.field.node.contact.field_location_with_image
+    - field.field.node.contact.field_maps
+    - field.field.node.contact.field_our_location
+    - field.field.node.contact.field_schedule
+    - node.type.contact
+  module:
+    - text
+    - user
+id: node.contact.teaser
+targetEntityType: node
+bundle: contact
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_1st_webform: true
+  field_contact_us_: true
+  field_location_with_image: true
+  field_maps: true
+  field_our_location: true
+  field_schedule: true

@@ -1,0 +1,25 @@
+uuid: 7562bef6-8217-491b-85b2-4021c97a0f67
+langcode: en
+status: true
+dependencies:
+  module:
+    - hct
+    - system
+  theme:
+    - eitb
+id: workblock
+theme: eitb
+region: header
+weight: 0
+provider: null
+plugin: Work
+settings:
+  id: Work
+  label: 'Work Block'
+  label_display: '0'
+  provider: hct
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /our-works

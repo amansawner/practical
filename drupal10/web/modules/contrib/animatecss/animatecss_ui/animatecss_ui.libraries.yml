@@ -1,0 +1,108 @@
+animate-css:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      /libraries/animate.css/animate.min.css: { minified: true }
+
+animate-compat:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      /libraries/animate.css/animate.compat.css: { minified: true }
+
+animate-dev:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      /libraries/animate.css/animate.css: { }
+
+animate-cdn:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css': { type: external, minified: true }
+
+animate-cdn-dev:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.css': { type: external }
+
+animate-cdn-compat:
+  remote: https://animate.style/
+  version: v4.1.1
+  license:
+    name: MIT
+    url: https://github.com/animate-css/animate.css/blob/main/LICENSE
+    gpl-compatible: true
+  css:
+    theme:
+      '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.css': { type: external, minified: true }
+
+animate-list:
+  version: VERSION
+  css:
+    theme:
+      css/animatecss.admin.css: { }
+
+animate-form:
+  version: VERSION
+  css:
+    theme:
+      css/animatecss.form.css: { }
+  js:
+    js/animatecss.admin.js: { }
+    js/animatecss.sidebar.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+animate-settings:
+  version: VERSION
+  css:
+    theme:
+      css/animatecss.admin.css: { }
+  js:
+    js/animatecss.admin.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+animate-init:
+  version: VERSION
+  js:
+    js/animatecss.init.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once

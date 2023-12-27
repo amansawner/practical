@@ -1,0 +1,23 @@
+uuid: af6e17ab-cc3c-4f30-a4b1-aedb24db5125
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_body
+    - paragraphs.paragraphs_type.contact_us_para
+  module:
+    - text
+id: paragraph.contact_us_para.field_para_body
+field_name: field_para_body
+entity_type: paragraph
+bundle: contact_us_para
+label: 'para body'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

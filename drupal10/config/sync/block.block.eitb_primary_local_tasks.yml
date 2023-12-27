@@ -1,0 +1,22 @@
+uuid: 3ab8937c-eeb4-47d1-b731-304ebb134c0b
+langcode: en
+status: false
+dependencies:
+  theme:
+    - eitb
+_core:
+  default_config_hash: nGE3EoPQQaQCuqTUtZgw0-KIzmrqdKDzdNQf2JyPUt4
+id: eitb_primary_local_tasks
+theme: eitb
+region: header
+weight: -2
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility: {  }

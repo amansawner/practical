@@ -1,0 +1,5 @@
+animatecss.admin:
+  title: Animate CSS
+  description: 'Configure global settings to use the Animate.css library.'
+  parent: system.admin_config_ui
+  route_name: animatecss.admin

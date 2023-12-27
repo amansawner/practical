@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Drupal`s integration with WOW.js library.
+ *
+ * WOW.js is a javascript library to reveal CSS animation
+ * as you scroll down a page.
+ *
+ * By default, you can use it to trigger animate.css animations.
+ * But you can easily change the settings to your favorite animation library.
+ *
+ * Github:  https://github.com/matthieua/WOW
+ * Website: https://www.delac.io/WOW
+ * license: MIT licensed
+ *
+ * Copyright (C) 2013-2023 Matt Delac
+ */
+
+use Drupal\Core\Installer\InstallerKernel;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function wowjs_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.wowjs':
+      $output  = '<h3 class="animate__animated animate__bounce">' . t('About') . '</h3>';
+      $output .= '<p class="animate__animated animate__fadeInUp animate__delay-1s">' . t('The WOW JS is a module that aims to integrate <a href=":wow_library">WOW.js</a> library with Drupal. The WOW is a Javascript library which works nicely with the Animate.CSS library to create great cross browser CSS3-based animations in your Drupal sites.', [':wow_library' => 'https://www.delac.io/WOW/']) . '</p>';
+      $output .= '<h3 class="animate__animated animate__zoomIn animate__delay-2s">' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt class="animate__animated animate__flipInX animate__delay-3s">' . t('Basic usage') . '</dt>';
+      $output .= '<dd class="animate__animated animate__slideInLeft animate__delay-4s"><p>' . t('Add the class wow to an element, along with any of the animation names (do not forget the animate__ prefix!)') . '</p>';
+      $output .= '<pre><code>';
+      $output .= '&lt;section class="wow animate__slideInLeft"&gt;An animated element&lt;/section&gt;' . "\n";
+      $output .= '&lt;section class="wow animate__slideInRight"&gt;An animated element&lt;/section&gt;' . "\n";
+      $output .= '</code></pre></dd>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
+
+/**
+ * Check to make sure that WOW.js library is installed.
+ *
+ * @return bool
+ *   Flag indicating if the library is properly installed.
+ */
+function wowjs_check_installed() {
+  // Throw error if WOW.js library file not found.
+  /** @var Drupal\Core\Asset\LibraryDiscovery $library_discovery */
+  $library_discovery = \Drupal::service('library.discovery');
+  $library_exists = FALSE;
+  $definition = $library_discovery->getLibraryByName('wowjs', 'wow-local');
+
+  // Check if $definition is an array before accessing its elements.
+  if (is_array($definition) && isset($definition['js'][0]['data'])) {
+    $library_exists = file_exists(DRUPAL_ROOT . '/' . $definition['js'][0]['data']);
+  }
+
+  return $library_exists;
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function wowjs_page_attachments(array &$attachments) {
+  // Don't add the Library during installation.
+  if (InstallerKernel::installationAttempted()) {
+    return;
+  }
+
+  // Check first WOW JS UI module is not installed and library not exists.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('wowjs_ui')) {
+    // Support Animate.css v4.x also v3.X and under.
+    $compat = FALSE;
+    if ($moduleHandler->moduleExists('animate_ui')) {
+      // Load the Animate.css configuration settings.
+      $config = \Drupal::config('animatecss.settings');
+      $compat = $config->get('compat');
+    }
+    $attachments['#attached']['drupalSettings']['wowjs']['compat'] = $compat;
+
+    // Check if the WOW.js library is installed, then load
+    // from local otherwise it will be loaded via CDN method.
+    if (wowjs_check_installed()) {
+      $attachments['#attached']['library'][] = 'wowjs/wow-local';
+    }
+    else {
+      $attachments['#attached']['library'][] = 'wowjs/wow-cdn';
+    }
+
+    // Load WOW initial file from library.
+    $attachments['#attached']['library'][] = 'wowjs/wow-init';
+  }
+}

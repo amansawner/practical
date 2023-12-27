@@ -1,0 +1,19 @@
+uuid: ce1ab52f-ef40-4160-84f9-cac9e9ad8040
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_location_with_image
+field_name: field_location_with_image
+entity_type: node
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,27 @@
+load: true
+silent: false
+method: local
+minimized:
+  options: true
+url:
+  visibility: '0'
+  pages:
+    - '/admin*'
+    - '/imagebrowser*'
+    - '/img_assist*'
+    - '/imce*'
+    - '/node/add*'
+    - '/node/*/edit'
+    - '/print/*'
+    - '/printpdf/*'
+    - '/system/ajax'
+    - '/system/ajax/*'
+options:
+  selector:
+    - '.block'
+  animation: 'fadeInUp'
+  delay: ''
+  time: ''
+  speed: 'medium'
+  duration: ''
+  repeat: ''

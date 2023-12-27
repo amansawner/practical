@@ -1,0 +1,47 @@
+uuid: 6a19c8e2-c8cc-4465-ba91-4f24d3d993c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.contact_us_para.field_email
+    - field.field.paragraph.contact_us_para.field_email_image
+    - field.field.paragraph.contact_us_para.field_para_body
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.contact_us_para
+  module:
+    - image
+    - text
+id: paragraph.contact_us_para.default
+targetEntityType: paragraph
+bundle: contact_us_para
+mode: default
+content:
+  field_email:
+    type: email_default
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_email_image:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_para_body:
+    type: text_textarea_with_summary
+    weight: 2
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

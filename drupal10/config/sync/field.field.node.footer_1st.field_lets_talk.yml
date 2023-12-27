@@ -1,0 +1,19 @@
+uuid: 231d6076-42d5-4c02-a305-4e1d2ffbced2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lets_talk
+    - node.type.footer_1st
+id: node.footer_1st.field_lets_talk
+field_name: field_lets_talk
+entity_type: node
+bundle: footer_1st
+label: 'lets talk'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

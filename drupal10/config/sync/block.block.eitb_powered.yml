@@ -1,0 +1,22 @@
+uuid: c7ed7722-9803-4a35-803e-690d47c64139
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - eitb
+_core:
+  default_config_hash: eYL19CLDyinGTWYQfBD1DswWzglEotE_kHnHx3AxTXM
+id: eitb_powered
+theme: eitb
+region: header
+weight: 5
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  label_display: '0'
+  provider: system
+visibility: {  }

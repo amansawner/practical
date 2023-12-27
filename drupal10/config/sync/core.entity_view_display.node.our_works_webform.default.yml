@@ -1,0 +1,30 @@
+uuid: 0cf0352e-7a05-4dd3-949a-7bcbfc14de1e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.our_works_webform.field_weborm_bef
+    - node.type.our_works_webform
+  module:
+    - user
+    - webform
+id: node.our_works_webform.default
+targetEntityType: node
+bundle: our_works_webform
+mode: default
+content:
+  field_weborm_bef:
+    type: webform_entity_reference_entity_view
+    label: hidden
+    settings:
+      source_entity: true
+      lazy: false
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

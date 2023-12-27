@@ -1,0 +1,19 @@
+uuid: 5178bb33-d680-47c4-ae9c-a1cc25f2112f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image_text
+    - node.type.images
+id: node.images.field_image_text
+field_name: field_image_text
+entity_type: node
+bundle: images
+label: 'image text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

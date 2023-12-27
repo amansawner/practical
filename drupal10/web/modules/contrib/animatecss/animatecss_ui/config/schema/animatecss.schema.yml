@@ -1,0 +1,49 @@
+animatecss.settings:
+  type: mapping
+  label: 'AnimateCSS Settings'
+  mapping:
+    load:
+      type: boolean
+      label: 'Let module handle loading Animate.css library'
+    silent:
+      type: boolean
+      label: 'Silent warning message'
+    method:
+      type: string
+      label: 'Loading Animate.css library method'
+    compat:
+      type: boolean
+      label: 'Use Animate.css compat version'
+    minimized:
+      options:
+        type: integer
+        label: 'Minimized'
+    url:
+      visibility:
+        type: integer
+        label: 'URL Visibility'
+      pages:
+        type: array
+        label: 'Pages'
+    options:
+      selector:
+        type: array
+        label: 'Selectors'
+      animation:
+        type: string
+        label: 'Animation'
+      delay:
+        type: string
+        label: 'Delay'
+      time:
+        type: string
+        label: 'Delay time'
+      speed:
+        type: string
+        label: 'Speed'
+      duration:
+        type: string
+        label: 'Duration'
+      repeat:
+        type: integer
+        label: 'Repeat'

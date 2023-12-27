@@ -1,0 +1,42 @@
+uuid: 2d9b2cb7-2db4-4436-9d33-334712d0f1a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_social
+    - node.type.footer_1st
+  module:
+    - social_link_field
+id: node.footer_1st.field_social
+field_name: field_social
+entity_type: node
+bundle: footer_1st
+label: social
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  platforms:
+    linkedin: linkedin
+    instagram: instagram
+    pinterest: pinterest
+    googleplus: googleplus
+    facebook: facebook
+    email: email
+    twitter: twitter
+    drupalpage: 0
+    vimeo: 0
+    homepage: 0
+    spotifyartist: 0
+    facebookevent: 0
+    youtube: 0
+    spotifyplaylist: 0
+    tiktok: 0
+    bitbucket: 0
+    behance: 0
+    github: 0
+    spotifyalbum: 0
+    drupal: 0
+field_type: social_links
